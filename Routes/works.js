@@ -6,7 +6,7 @@ const { formatData } = require("../assets/dateFormated");
 
 app.get("/Works/List", (req, res) => {
   connection.query(
-    "select * from Categories C, Works W where W.Category_ID = C.Category_ID ORDER BY Publish_Date DESC",
+    "select * from categories C, works W where W.Category_ID = C.Category_ID ORDER BY Publish_Date DESC",
     (err, results) => {
       if (err) throw err;
       res.send(results);
@@ -93,10 +93,10 @@ app.get("/Works/:id/List", (req, res) => {
 
 app.get("/Works/:searchparam/jobList", (req, res) => {
   connection.query(
-    `select * from  Works w
-     inner join Categories ca
+    `select * from  works w
+     inner join categories ca
      on ca.Category_ID  = w.Category_ID
-     inner join Companies c
+     inner join companies c
      on c.Company_ID = w.Company_ID
      where w.Location like '%${req.params.searchparam}%'
      or w.Position like '%${req.params.searchparam}%'
