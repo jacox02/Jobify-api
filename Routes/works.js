@@ -4,7 +4,7 @@ const connection = require("../Database/database");
 
 const { formatData } = require("../assets/dateFormated");
 
-app.get("/Works/List", (req, res) => {
+app.get("/works/List", (req, res) => {
   connection.query(
     "select * from categories C, works W where W.Category_ID = C.Category_ID ORDER BY Publish_Date DESC",
     (err, results) => {
