@@ -93,15 +93,12 @@ app.get("/Works/:id/List", (req, res) => {
 
 app.get("/Works/:searchparam/jobList", (req, res) => {
   connection.query(
-    `select * from  works w
-     inner join categories ca
-     on ca.Category_ID  = w.Category_ID
-     inner join companies c
-     on c.Company_ID = w.Company_ID
-     where w.Location like '%${req.params.searchparam}%'
-     or w.Position like '%${req.params.searchparam}%'
-     or c.Company_Name like '%${req.params.searchparam}%'
-     or w.Work_Title like '%${req.params.searchparam}%'`,
+    `select * from works w
+    inner join categories c
+    on c.Category_ID  = w.Category_ID
+    where w.Location like '%${req.params.searchparam}%'
+    or w.Position like '%${req.params.searchparam}%'
+    or w.Work_Title like '%${req.params.searchparam}%'`,
     (err, results) => {
       if (err)
         throw (
