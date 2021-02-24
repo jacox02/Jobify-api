@@ -9,7 +9,7 @@ const expressSession = require("express-session")({
   saveUninitialized: false,
 });
 
-const PORT = process.env.SERVER_PORT || 3050;
+const PORT = process.env.PORT || 3050;
 
 app.use(
   cors({
