@@ -30,7 +30,7 @@ app.use(require("./Routes/usersRoutes"));
 app.use(require("./Routes/auth"));
 
 app.get("/", (req, res) => {
-  res.send({ message: "OK", code: 200 });
+  res.send({ message: "YOUR API IS WORKING!", code: 200 });
 });
 
 app.listen(PORT, () => {
