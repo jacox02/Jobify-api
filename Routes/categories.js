@@ -11,7 +11,7 @@ app.get("/categories/list", (req, res) => {
   });
 });
 
-app.get("/categories/add", (req, res) => {
+app.post("/categories/add", (req, res) => {
   const { categoryName } = req.body;
   const newCategory = {
     Category_Name: categoryName,
