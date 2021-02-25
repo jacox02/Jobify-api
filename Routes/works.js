@@ -46,7 +46,6 @@ app.post("/works/add/", (req, res) => {
     updatedAt: formatData(),
     Category_ID: categoryid,
   };
-  console.log(newJob);
   connection.query("INSERT INTO works set ?", [newJob]);
 });
 
