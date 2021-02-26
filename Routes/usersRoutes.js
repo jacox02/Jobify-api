@@ -14,33 +14,6 @@ router.get('/', async (req, res) =>{
 
 module.exports = router;
 
-/*Registro de usuarios*/
-const insert = ({User_Name, User_Email, User_Password}) => {
-    return new Promise((resolve, reject) => {
-        db.query('INSERT INTO users ( User_Name, User_Email, User_Password) VALUES (?, ?, ?, ?)', [User_Name, User_Email, User_Password], 
-        (result) => {
-            if (err) reject(err)
-            if(result){
-                resolve(result)
-            };
-        });
-    });
-};
-
-/*Obtener usuarios por su Email*/
-const getByEmail = (pEmail) => {
-    return new Promise((resolve, reject) =>{
-        db.query('SELECT * FROM users WHERE User_Email = ?', [pEmail, (err, rows) => {
-            if (err) reject (err)
-            resolve(rows[0])
-        }]);
-    });
-};
-
-
-
-
-
 /*Manejador de la rutas register*/
 
 router.post('/register', async (req, res) => {
@@ -83,19 +56,3 @@ router.post('login', async(req, res) => {
     }
 })
 
-const getById = (pId) => {
-    return new Promise((resolve, reject) =>{
-        db.query('SELECT * FROM users WHERE id = ?', [pId], (err, rows) => {
-            if (err) reject(err)
-            resolve(rows[0])
-        });
-    });
-};
-
-
-module.exports = {
-    getAll: getAll,
-    insert: insert,
-    getByEmail: getByEmail,
-    getById: getById
-}
