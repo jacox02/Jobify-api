@@ -1,11 +1,11 @@
 const express = require("express");
 const app = express();
-const connection = require("../Database/database");
+const pool = require("../Database/database");
 
 const { formatData } = require("../assets/dateFormated");
 
 app.get("/works/List", (req, res) => {
-  connection.query(
+  pool.query(
     "select * from categories C, works W where W.Category_ID = C.Category_ID ORDER BY Publish_Date DESC",
     (err, results) => {
       if (err) throw err;
@@ -46,11 +46,11 @@ app.post("/works/add/", (req, res) => {
     updatedAt: formatData(),
     Category_ID: categoryid,
   };
-  connection.query("INSERT INTO works set ?", [newJob]);
+  pool.query("INSERT INTO works set ?", [newJob]);
 });
 
 app.get("/myWorks/:ownermail/List", (req, res) => {
-  connection.query(
+  pool.query(
     `SELECT * FROM works WHERE Owner_Email= '${req.params.ownermail}'`,
     (err, result) => {
       if (err) {
@@ -72,7 +72,7 @@ app.get("/myWorks/:ownermail/List", (req, res) => {
 
 app.get("/Works/:id/List", (req, res) => {
   if (req.params.id == "1") {
-    connection.query(
+    pool.query(
       `select * from categories C, works W where  W.Category_ID = C.Category_ID`,
       (err, results) => {
         if (err) throw err;
@@ -80,7 +80,7 @@ app.get("/Works/:id/List", (req, res) => {
       }
     );
   } else {
-    connection.query(
+    pool.query(
       `select * from categories C, works W WHERE W.Category_ID = C.Category_ID AND W.Category_ID = ${req.params.id}`,
       (err, results) => {
         if (err) throw err;
@@ -91,7 +91,7 @@ app.get("/Works/:id/List", (req, res) => {
 });
 
 app.get("/Works/:searchparam/jobList", (req, res) => {
-  connection.query(
+  pool.query(
     `select * from works w
     inner join categories c
     on c.Category_ID  = w.Category_ID
@@ -112,7 +112,7 @@ app.get("/Works/:searchparam/jobList", (req, res) => {
 });
 
 app.get("/Works/:id/Details", (req, res) => {
-  connection.query(
+  pool.query(
     `select * from works where Work_ID = ${req.params.id}`,
     (err, results) => {
       if (err) throw err;
@@ -122,7 +122,7 @@ app.get("/Works/:id/Details", (req, res) => {
 });
 
 app.get("/Works/Categories", (req, res) => {
-  connection.query("select * from categories ", (err, results) => {
+  pool.query("select * from categories ", (err, results) => {
     if (err) throw err;
     res.send(results);
   });

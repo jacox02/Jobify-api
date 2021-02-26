@@ -19,7 +19,7 @@ app.use(expressSession);
 
 app.use(require("./Routes/works"));
 app.use(require("./Routes/categories"));
-app.use(require("./Routes/usersRoutes"));
+//COMENTED TO RUN PM2 app.use(require("./Routes/usersRoutes"));
 app.use(require("./Routes/auth"));
 
 app.get("/", (req, res) => {
@@ -27,5 +27,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running on port: http:${PORT}`);
+  console.log(`Server running on port: ${PORT}`);
 });
