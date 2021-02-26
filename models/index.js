@@ -53,10 +53,10 @@ db.users.removeAttribute("createdAt");
 db.users.removeAttribute("updatedAt");
 
 db.companie.removeAttribute("createdAt");
-db.companie.removeAttribute("createdAt");
+db.companie.removeAttribute("updatedAt");
 
 db.categories.removeAttribute("updatedAt");
-db.categories.removeAttribute("updatedAt");
+db.categories.removeAttribute("createdAt");
 
 db.categories.hasOne(db.works, {
   foreignKey: "Category_ID",

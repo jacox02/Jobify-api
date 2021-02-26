@@ -14,8 +14,6 @@ router.get("/", async (req, res) => {
 
 module.exports = router;
 
-<<<<<<< HEAD
-=======
 /*Registro de usuarios*/
 const insert = ({ User_Name, User_Email, User_Password }) => {
   return new Promise((resolve, reject) => {
@@ -45,7 +43,6 @@ const getByEmail = (pEmail) => {
   });
 };
 
->>>>>>> a611333336684bd68e454daf7b5f62aa084cd3b7
 /*Manejador de la rutas register*/
 
 router.post("/register", async (req, res) => {
@@ -86,8 +83,6 @@ router.post("login", async (req, res) => {
   }
 });
 
-<<<<<<< HEAD
-=======
 const getById = (pId) => {
   return new Promise((resolve, reject) => {
     db.query("SELECT * FROM users WHERE id = ?", [pId], (err, rows) => {
@@ -103,4 +98,3 @@ module.exports = {
   getByEmail: getByEmail,
   getById: getById,
 };
->>>>>>> a611333336684bd68e454daf7b5f62aa084cd3b7

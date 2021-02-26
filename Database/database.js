@@ -1,22 +1,14 @@
 const mysql = require("mysql");
 const { promisify } = require("util");
 
-const connString = {
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.DB_DBNAME,
-  dialect: "mysql",
-  pool: {
-    max: 5,
-    min: 0,
-    acquire: 30000,
-    idle: 10000,
-  },
+const connection = {
+  host: "b0sfslo2fk2n7unict7p-mysql.services.clever-cloud.com",
+  user: "ueu6tybzavoosuu6",
+  password: "mIInHAx0SF37MxAhBXus",
+  database: "b0sfslo2fk2n7unict7p",
 };
 
-const pool = mysql.createPool(connString);
+const pool = mysql.createPool(connection);
 
 pool.getConnection((err, connection) => {
   if (err) {

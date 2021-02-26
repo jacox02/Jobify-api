@@ -2,8 +2,6 @@ const express = require("express");
 const app = express();
 const pool = require("../Database/database");
 
-const formatData = require("../assets/dateFormated");
-
 app.get("/categories/list", async (req, res) => {
   await pool.query("Select * from categories", (err, results, fields) => {
     if (err) throw err;
