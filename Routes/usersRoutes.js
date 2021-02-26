@@ -62,7 +62,7 @@ const createToken = (users) => {
 
 /*MANEJO DEL LOGIN*/
 
-app.post("login", async (req, res) => {
+app.post("/login", async (req, res) => {
   const user = await Users.getByEmail(req.body.email);
   if (user === undefined) {
     res.json({
