@@ -26,6 +26,7 @@ app.use(expressSession);
 app.use(require("./Routes/works"));
 app.use(require("./Routes/categories"));
 app.use(require("./Routes/auth"));
+app.use(require("./Routes/usersRoutes"));
 
 require("./routesServer/works.routes")(app);
 require("./routesServer/category.routes")(app);

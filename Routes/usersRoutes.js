@@ -1,18 +1,18 @@
 const express = require("express");
 const db = require("../models");
-const router = express.Router();
-const Users = require("../models/users");
+const app = express();
+const Users = require("../models/user.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jwt-simple");
 const moment = require("moment");
 const connection = require("../Database/database");
 
-router.get("/", async (req, res) => {
+app.get("/", async (req, res) => {
   const users = await Users.getAll();
   res.json(Users);
 });
 
-module.exports = router;
+module.exports = app;
 
 /*Registro de usuarios*/
 const insert = ({ User_Name, User_Email, User_Password }) => {
@@ -45,7 +45,7 @@ const getByEmail = (pEmail) => {
 
 /*Manejador de la rutas register*/
 
-router.post("/register", async (req, res) => {
+app.post("/register", async (req, res) => {
   console.log(req.body);
   req.body.User_Password = bcrypt.hashSync(req.body.User_Password, 10);
   const result = await Users.insert(req.body);
@@ -62,7 +62,7 @@ const createToken = (users) => {
 
 /*MANEJO DEL LOGIN*/
 
-router.post("login", async (req, res) => {
+app.post("login", async (req, res) => {
   const user = await Users.getByEmail(req.body.email);
   if (user === undefined) {
     res.json({
@@ -92,9 +92,4 @@ const getById = (pId) => {
   });
 };
 
-module.exports = {
-  getAll: getAll,
-  insert: insert,
-  getByEmail: getByEmail,
-  getById: getById,
-};
+
