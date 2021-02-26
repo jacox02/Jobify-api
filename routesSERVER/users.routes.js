@@ -25,7 +25,7 @@ const insert = ({ User_Name, User_Email, User_Password }) => {
     );
   });
 };
-
+//ELIMINAR ROUTESSERVER Y SUSTITUIR POR CONTROLADORES
 /*Obtener usuarios por su Email*/
 const getByEmail = (pEmail) => {
   return new Promise((resolve, reject) => {

@@ -91,5 +91,3 @@ const getById = (pId) => {
     });
   });
 };
-
-
