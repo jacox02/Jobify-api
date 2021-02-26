@@ -27,6 +27,7 @@ app.use(require("./Routes/works"));
 app.use(require("./Routes/categories"));
 app.use(require("./Routes/auth"));
 app.use(require("./Routes/usersRoutes"));
+app.use(require("./Routes/configs"))
 
 require("./routesServer/works.routes")(app);
 require("./routesServer/category.routes")(app);
