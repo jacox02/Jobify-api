@@ -3,8 +3,8 @@ const app = express();
 const pool = require("../Database/database");
 const momment = require("moment");
 
-app.get("/works/List", (req, res) => {
-  pool.query(
+app.get("/works/List", async (req, res) => {
+  await pool.query(
     "select * from categories C, works W where W.Category_ID = C.Category_ID ORDER BY Publish_Date DESC",
     (err, results) => {
       if (err) throw err;
@@ -13,7 +13,7 @@ app.get("/works/List", (req, res) => {
   );
 });
 
-app.post("/works/add/", (req, res) => {
+app.post("/works/add/", async (req, res) => {
   const {
     title,
     ownermail,
@@ -29,8 +29,8 @@ app.post("/works/add/", (req, res) => {
   } = req.body;
 
   const newJob = {
-    Work_Title: title,
     Publish_Date: momment().format("YYYY-MM-DD HH:mm:ss"),
+    Work_Title: title,
     Owner_Email: ownermail,
     Work_Keywords: keyword,
     Job_URL: joburl,
@@ -43,11 +43,16 @@ app.post("/works/add/", (req, res) => {
     Description: description,
     Category_ID: categoryid,
   };
-  pool.query("INSERT INTO works set ?", [newJob]);
+  await pool
+    .query("INSERT INTO works set ?", [newJob])
+    .then(() => {
+      res.send({ code: 200, message: "Trabajo anadido correctamente" });
+    })
+    .catch(console.log());
 });
 
-app.get("/myWorks/:ownermail/List", (req, res) => {
-  pool.query(
+app.get("/myWorks/:ownermail/List", async (req, res) => {
+  await pool.query(
     `SELECT * FROM works WHERE Owner_Email= '${req.params.ownermail}'`,
     (err, result) => {
       if (err) {
