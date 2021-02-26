@@ -1,8 +1,7 @@
 const express = require("express");
 const app = express();
 const pool = require("../Database/database");
-
-const { formatData } = require("../assets/dateFormated");
+const momment = require("moment");
 
 app.get("/works/List", (req, res) => {
   pool.query(
@@ -31,7 +30,7 @@ app.post("/works/add/", (req, res) => {
 
   const newJob = {
     Work_Title: title,
-    Publish_Date: formatData.formatData(),
+    Publish_Date: momment().format("YYYY-MM-DD HH:mm:ss"),
     Owner_Email: ownermail,
     Work_Keywords: keyword,
     Job_URL: joburl,
@@ -46,9 +45,7 @@ app.post("/works/add/", (req, res) => {
   };
   pool.query("INSERT INTO works set ?", [newJob]);
 });
-app.get("/TESTDATAROUTE/", (req, res) => {
-  res.send(console.log(formatData()));
-});
+
 app.get("/myWorks/:ownermail/List", (req, res) => {
   pool.query(
     `SELECT * FROM works WHERE Owner_Email= '${req.params.ownermail}'`,
