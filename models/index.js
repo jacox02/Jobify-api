@@ -1,4 +1,3 @@
-const DBConfig = require("./config");
 const Sequelize = require("sequelize");
 
 const connection = {
@@ -15,7 +14,23 @@ const connection = {
     idle: 10000,
   },
 };
-const sequelize = new Sequelize(connection);
+
+const sequelize = new Sequelize(
+  connection.database,
+  connection.user,
+  connection.password,
+  {
+    host: connection.host,
+    dialect: connection.dialect,
+    operatorsAliases: false,
+    pool: {
+      max: connection.pool.max,
+      min: connection.pool.min,
+      acquire: connection.pool.acquire,
+      idle: connection.pool.idle,
+    },
+  }
+);
 
 const db = {};
 
@@ -27,6 +42,22 @@ db.users = require("./user.model")(sequelize, Sequelize);
 db.companie = require("./companies.model")(sequelize, Sequelize);
 db.categories = require("./category.model")(sequelize, Sequelize);
 db.config = require("./config.model")(sequelize, Sequelize);
+
+db.config.removeAttribute("createdAt");
+db.config.removeAttribute("updatedAt");
+
+db.works.removeAttribute("createdAt");
+db.works.removeAttribute("updatedAt");
+
+db.users.removeAttribute("createdAt");
+db.users.removeAttribute("updatedAt");
+
+db.companie.removeAttribute("createdAt");
+db.companie.removeAttribute("createdAt");
+
+db.categories.removeAttribute("updatedAt");
+db.categories.removeAttribute("updatedAt");
+
 db.categories.hasOne(db.works, {
   foreignKey: "Category_ID",
 });
