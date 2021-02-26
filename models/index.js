@@ -43,7 +43,6 @@ db.companie = require("./companies.model")(sequelize, Sequelize);
 db.categories = require("./category.model")(sequelize, Sequelize);
 db.config = require("./config.model")(sequelize, Sequelize);
 
-db.config.removeAttribute("id");
 db.config.removeAttribute("createdAt");
 db.config.removeAttribute("updatedAt");
 

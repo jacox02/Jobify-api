@@ -15,8 +15,6 @@ app.post("/categories/add", async (req, res) => {
   const { categoryName } = req.body;
   const newCategory = {
     Category_Name: categoryName,
-    createdAt: formatData,
-    updatedAt: formatData,
   };
 
   await pool

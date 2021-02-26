@@ -20,7 +20,7 @@ function formatData() {
       ? (parseInt(d.getMinutes() / 5) * 5).toString()
       : "0" + (parseInt(d.getMinutes() / 5) * 5).toString()) +
     ":00";
-
+  console.log(date_format_str);
   return date_format_str;
 }
 

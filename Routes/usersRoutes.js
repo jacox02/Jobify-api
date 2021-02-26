@@ -56,8 +56,6 @@ router.post("/register", async (req, res) => {
 const createToken = (users) => {
   let payload = {
     User_ID: users.User_ID,
-    createdAt: moment().unix(),
-    expiresAt: moment().add(1, "day").unix(),
   };
   return jwt.enconde(payload, process.env.TOKEN_KEY);
 };

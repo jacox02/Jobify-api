@@ -31,7 +31,7 @@ app.post("/works/add/", (req, res) => {
 
   const newJob = {
     Work_Title: title,
-    Publish_Date: formatData(),
+    Publish_Date: formatData.formatData(),
     Owner_Email: ownermail,
     Work_Keywords: keyword,
     Job_URL: joburl,
@@ -42,13 +42,13 @@ app.post("/works/add/", (req, res) => {
     Apply_Method: applymethod,
     Owner_Email: ownermail,
     Description: description,
-    createdAt: formatData(),
-    updatedAt: formatData(),
     Category_ID: categoryid,
   };
   pool.query("INSERT INTO works set ?", [newJob]);
 });
-
+app.get("/TESTDATAROUTE/", (req, res) => {
+  res.send(console.log(formatData()));
+});
 app.get("/myWorks/:ownermail/List", (req, res) => {
   pool.query(
     `SELECT * FROM works WHERE Owner_Email= '${req.params.ownermail}'`,
