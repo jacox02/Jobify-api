@@ -38,11 +38,7 @@ const getByEmail = (pEmail) => {
 };
 
 
-module.exports = {
-    getAll: getAll,
-    insert: insert,
-    getByEmail: getByEmail
-}
+
 
 
 /*Manejador de la rutas register*/
@@ -62,4 +58,44 @@ const createToken = (users) => {
         expiresAt: moment().add(1, 'day').unix()
     }
     return jwt.enconde(payload, process.env.TOKEN_KEY);
+}
+
+/*MANEJO DEL LOGIN*/
+
+router.post('login', async(req, res) => {
+    const user = await Users.getByEmail(req.body.email)
+    if (user === undefined){
+        res.json({
+            error:'Error, email or password not fount'
+        })
+    } else{
+        const equals = bcrypt.compareSync(req.body.User_Password, User_Password);
+        if (!equals){
+            res.json({
+                error:'Error, email or password not found'
+            });
+        }else{
+            res.json({
+                succesfull: createToken(user),
+                done: 'Login correct'
+            });
+        }
+    }
+})
+
+const getById = (pId) => {
+    return new Promise((resolve, reject) =>{
+        db.query('SELECT * FROM users WHERE id = ?', [pId], (err, rows) => {
+            if (err) reject(err)
+            resolve(rows[0])
+        });
+    });
+};
+
+
+module.exports = {
+    getAll: getAll,
+    insert: insert,
+    getByEmail: getByEmail,
+    getById: getById
 }
