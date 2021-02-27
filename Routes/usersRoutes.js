@@ -4,8 +4,6 @@ const app = express();
 const Users = require("../models/user.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jwt-simple");
-const moment = require("moment");
-const connection = require("../Database/database");
 
 app.get("/", async (req, res) => {
   const users = await Users.getAll();

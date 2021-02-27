@@ -60,6 +60,7 @@ db.categories.removeAttribute("createdAt");
 
 db.categories.hasOne(db.works, {
   foreignKey: "Category_ID",
+  onDelete: "cascade",
 });
 
 module.exports = db;
