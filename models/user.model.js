@@ -19,6 +19,7 @@ module.exports = (sequalize, Sequalize) => {
   });
   return User;
 };
+
 const getById = (pId) => {
   return new Promise((resolve, reject) => {
     db.query("SELECT * FROM users WHERE id = ?", [pId], (err, rows) => {

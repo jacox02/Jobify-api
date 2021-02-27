@@ -10,8 +10,6 @@ app.get("/", async (req, res) => {
   res.json(Users);
 });
 
-module.exports = app;
-
 /*Registro de usuarios*/
 const insert = ({ User_Name, User_Email, User_Password }) => {
   return new Promise((resolve, reject) => {
@@ -89,3 +87,5 @@ const getById = (pId) => {
     });
   });
 };
+
+module.exports = app;
