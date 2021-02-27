@@ -11,15 +11,19 @@ app.get("/WorkQuantity", (req, res) => {
     }
   );
 });
-
-app.put("/WorkQuantity/edit", (req, res) => {
-  const quantity = req.body;
-  const setquantity = {
-    Work_Quantity: quantity,
+app.put("/WorkQuantity/edit"),
+  (req, res) => {
+    const quantity = req.body.quantity;
+    pool.query(
+      `UPDATE configs SET Work_Quantity = ? WHERE id = 1`,
+      quantity,
+      (err, result) => {
+        if (err) {
+          console.log(err);
+        } else {
+          res.send(result);
+        }
+      }
+    );
   };
-  pool.query(`UPDATE configs SET Work_Quantity = ? WHERE id = 1`, [
-    setquantity,
-  ]);
-});
-
 module.exports = app;
