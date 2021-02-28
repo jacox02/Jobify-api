@@ -3,7 +3,7 @@ const app = express();
 const pool = require("../Database/database");
 
 app.get("/categories/list", async (req, res) => {
-  await pool.query("Select * from categories", (err, results, fields) => {
+  await pool.query("Select * from categories", (err, results) => {
     if (err) throw err;
     res.send(results);
   });

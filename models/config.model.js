@@ -3,6 +3,12 @@ module.exports = (sequelize, Sequelize) => {
     Work_Quantity: {
       type: Sequelize.INTEGER(2),
       allowNull: false,
+      defaultValue: 10,
+    },
+    Selected_Category: {
+      type: Sequelize.INTEGER(2),
+      allowNull: false,
+      defaultValue: 1,
     },
   });
   return Config;
