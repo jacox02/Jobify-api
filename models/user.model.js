@@ -1,3 +1,5 @@
+const db = require(".");
+
 module.exports = (sequalize, Sequalize) => {
   const User = sequalize.define("user", {
     User_ID: {
@@ -28,7 +30,14 @@ const getById = (pId) => {
     });
   });
 };
-
+const getAll = () =>{
+  return new Promise((resolve, reject) =>{
+    db.query('SELECT * FROM users', (err, rows) =>{
+      if (err) reject(err)
+      resolve(rows);
+    })
+  })
+}
 /*Registro de usuarios*/
 const insert = ({ User_Name, User_Email, User_Password }) => {
   return new Promise((resolve, reject) => {
@@ -57,3 +66,10 @@ const getByEmail = (pEmail) => {
     ]);
   });
 };
+
+module.exports = {
+  getAll: getAll,
+  insert: insert,
+  getById: getById,
+  getByEmail: getByEmail
+}
