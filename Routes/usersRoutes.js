@@ -21,7 +21,7 @@ app.post("/register", async (req, res) => {
     .catch((err) => res.send(err));
 });
 
-app.post("/login", async (req, res) => {
+app.get("/login", async (req, res) => {
   const User_Email = req.body.User_Email;
   const User_Password = req.body.User_Password;
 
@@ -32,7 +32,7 @@ app.post("/login", async (req, res) => {
       if (err) {
         res.send({ err: err });
       }
-      if (results) {
+      if (results.length > 0) {
         res.send(results);
       } else {
         res.send({ message: "wrong Useremail/password combination!" });
