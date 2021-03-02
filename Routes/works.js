@@ -93,10 +93,10 @@ app.get("/myWorks/:ownermail/List", async (req, res) => {
   );
 });
 
-app.get("/Works/:id/List", (req, res) => {
+app.get("/Works/:id/List/:maxquantity", (req, res) => {
   if (req.params.id == "1") {
     pool.query(
-      `select * from categories C, works W where  W.Category_ID = C.Category_ID`,
+      `select * from categories C, works W where  W.Category_ID = C.Category_ID limit ${req.params.maxquantity}`,
       (err, results) => {
         if (err) throw err;
         res.send(results);
@@ -104,7 +104,7 @@ app.get("/Works/:id/List", (req, res) => {
     );
   } else {
     pool.query(
-      `select * from categories C, works W WHERE W.Category_ID = C.Category_ID AND W.Category_ID = ${req.params.id}`,
+      `select * from categories C, works W WHERE W.Category_ID = C.Category_ID AND W.Category_ID = ${req.params.id} limit ${req.params.maxquantity}`,
       (err, results) => {
         if (err) throw err;
         res.send(results);
@@ -181,14 +181,15 @@ app.put("/Update/Works/:id", (req, res) => {
   );
 });
 
-app.delete("/delete/Works/:id", (req, res) => {
-  pool.query(
-    `delete from works where Work_ID = ${req.params.id}`,
-    (err, results) => {
-      if (err) throw err;
-      res.send(results);
-    }
-  );
+app.post("/works/delete/:id", (req, res) => {
+  pool
+    .query(`delete from works where Work_ID = ${req.params.id}`)
+    .then((res) => {
+      res.send(res);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
 });
 
 app.put("/Update/Categories/:id", (req, res) => {

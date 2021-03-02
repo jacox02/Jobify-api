@@ -5,13 +5,11 @@ const pool = require("../Database/database");
 app.get("/config", (req, res) => {
   pool.query(`select * from configs where id = 1`, (err, results) => {
     if (err) throw err;
-    res.send(results);
+    res.send(results[0]);
   });
 });
 
 app.post("/config/edit", (req, res) => {
-  console.log(typeof parseInt(req.body.Work_Quantity));
-
   const parsedConfig = parseInt(req.body.Work_Quantity);
   const parsedCategoryConfig = parseInt(req.body.Selected_Category);
   pool

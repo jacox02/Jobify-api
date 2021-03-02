@@ -1,11 +1,11 @@
 const Sequelize = require("sequelize");
 
 const connection = {
-  host: "b0sfslo2fk2n7unict7p-mysql.services.clever-cloud.com",
-  user: "ueu6tybzavoosuu6",
-  password: "mIInHAx0SF37MxAhBXus",
+  host: "database-2.ctfmzkj5ibyv.us-east-2.rds.amazonaws.com",
+  user: "admin",
+  password: "admin123",
   port: 3306,
-  database: "b0sfslo2fk2n7unict7p",
+  database: "jobifyDB",
   dialect: "mysql",
   pool: {
     max: 5,

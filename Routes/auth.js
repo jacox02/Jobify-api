@@ -5,4 +5,3 @@ const moment = require("moment");
 const app = express();
 
 module.exports = app;
-
