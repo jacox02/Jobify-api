@@ -1,54 +1,42 @@
 const express = require("express");
 const db = require("../models");
 const app = express();
-const Users = require("../models/user.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jwt-simple");
+const cors = require("cors");
+const pool = require("../Database/database")
+app.use(express.json());
 
-app.get("/", async (req, res) => {
-  const users = await Users.getAll();
-  res.json(Users);
+
+
+app.post('/register', async (req, res) => {
+
+  const User_Name = req.body.User_Name;
+  const User_Email = req.body.User_Email;
+  const User_Password = req.body.User_Password;
+
+ 
+ await pool.query("INSERT INTO users (User_Name, User_Email, User_Password) VALUES (?, ?, ?)",[User_Name, User_Email, User_Password], 
+  (err, result) => {
+    console.log(err);
+  });
 });
 
+app.post('/login', async (req, res) =>{
+  const User_Email = req.body.User_Email;
+  const User_Password = req.body.User_Password;
 
-/*Manejador de la rutas register*/
-
-app.post("/register", async (req, res) => {
-  console.log(req.body);
-  req.body.User_Password = bcrypt.hashSync(req.body.User_Password, 10);
-  const result = await Users.insert(req.body);
-  res.json(result);
-});
-
-/*TOKEN*/
-const createToken = (users) => {
-  let payload = {
-    User_ID: users.User_ID,
-  };
-  return jwt.enconde(payload, process.env.TOKEN_KEY);
-};
-
-/*MANEJO DEL LOGIN*/
-
-app.post("/login", async (req, res) => {
-  const user = await Users.getByEmail(req.body.email);
-  if (user === undefined) {
-    res.json({
-      error: "Error, email or password not fount",
-    });
-  } else {
-    const equals = bcrypt.compareSync(req.body.User_Password, User_Password);
-    if (!equals) {
-      res.json({
-        error: "Error, email or password not found",
-      });
-    } else {
-      res.json({
-        succesfull: createToken(user),
-        done: "Login correct",
-      });
+  await pool.query("SELECT * FROM users WHERE User_Email = ? AND User_Password =?",
+  [User_Email, User_Password],
+  (err, results)=>{
+    if(err){
+      res.send({err: err})
+    }if(results){
+      res.send(results);
+    }else{
+      res.send({message:"wrong Useremail/password combination!"});
     }
-  }
-});
+  });
 
+})
 module.exports = app;
