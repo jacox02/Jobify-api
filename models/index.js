@@ -1,11 +1,11 @@
 const Sequelize = require("sequelize");
-
+require("dotenv").config();
 const connection = {
-  host: "database-2.ctfmzkj5ibyv.us-east-2.rds.amazonaws.com",
-  user: "admin",
-  password: "admin123",
-  port: 3306,
-  database: "jobifyDB",
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  port: process.env.DB_PORT,
+  database: process.env.DB_DBNAME,
   dialect: "mysql",
   pool: {
     max: 5,

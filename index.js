@@ -5,6 +5,9 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const db = require("./models/index");
 
+require("dotenv").config();
+app.use(cors());
+
 const expressSession = require("express-session")({
   secret: "secret",
   resave: false,
