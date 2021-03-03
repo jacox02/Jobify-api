@@ -21,23 +21,28 @@ app.post("/register", async (req, res) => {
     .catch((err) => res.send(err));
 });
 
-app.post("/login", async (req, res) => {
+app.get("/login", async (req, res) => {
   const User_Email = req.body.User_Email;
   const User_Password = req.body.User_Password;
 
-  await pool.query(
-    "SELECT * FROM users WHERE User_Email = ? AND User_Password =?",
-    [User_Email, User_Password],
-    (err, results) => {
-      if (err) {
-        res.send({ err: err });
+  await bcrypt
+  .compareSync(User_Password, 10)
+  .then((compareSync)=>{
+    pool.query(
+      "SELECT * FROM users WHERE User_Email = ? AND User_Password =?",
+      [User_Email, User_Password],
+      (err, results) => {
+        if (err) {
+          res.send({ err: err });
+        }
+        if (results.length > 0) {
+          res.send(results);
+        } else {
+          res.send({ message: "wrong Useremail/password combination!" });
+        }
       }
-      if (results) {
-        res.send(results);
-      } else {
-        res.send({ message: "wrong Useremail/password combination!" });
-      }
-    }
-  );
+    );
+  })
+  
 });
 module.exports = app;
