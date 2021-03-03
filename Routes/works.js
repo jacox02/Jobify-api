@@ -3,7 +3,7 @@ const app = express();
 const pool = require("../Database/database");
 const momment = require("moment");
 
-app.get("/works/List", async (req, res) => {
+app.get("/works/List", async (res) => {
   await pool.query(
     "select * from categories C, works W where W.Category_ID = C.Category_ID ORDER BY Publish_Date DESC",
     (err, results) => {
@@ -48,15 +48,8 @@ app.post("/works/add/", async (req, res) => {
     .query("INSERT INTO works set ?", [newJob])
     .then(() => {
       res.send({
-        title: "Trabajo publicado",
-        text: "Su trabajo ha sido publicado correctamente",
-        icon: "success",
-        confirmButtonText: "Ok",
-        allowEnterKey: true,
-        allowEscapeKey: true,
-        allowOutsideClick: true,
-        timer: 500,
-        timerProgressBar: true,
+        message: "Trabajo anadido correctamente",
+        code: 200,
       });
     })
     .catch((err) => {
@@ -93,9 +86,9 @@ app.get("/myWorks/:ownermail/List", async (req, res) => {
   );
 });
 
-app.get("/Works/:id/List/:maxquantity", (req, res) => {
+app.get("/Works/:id/List/:maxquantity", async (req, res) => {
   if (req.params.id == "1") {
-    pool.query(
+    await pool.query(
       `select * from categories C, works W where  W.Category_ID = C.Category_ID limit ${req.params.maxquantity}`,
       (err, results) => {
         if (err) throw err;
@@ -103,7 +96,7 @@ app.get("/Works/:id/List/:maxquantity", (req, res) => {
       }
     );
   } else {
-    pool.query(
+    await pool.query(
       `select * from categories C, works W WHERE W.Category_ID = C.Category_ID AND W.Category_ID = ${req.params.id} limit ${req.params.maxquantity}`,
       (err, results) => {
         if (err) throw err;
@@ -113,8 +106,8 @@ app.get("/Works/:id/List/:maxquantity", (req, res) => {
   }
 });
 
-app.get("/Works/:searchparam/jobList", (req, res) => {
-  pool.query(
+app.get("/Works/:searchparam/jobList", async (req, res) => {
+  await pool.query(
     `select * from works w
     inner join categories c
     on c.Category_ID  = w.Category_ID
@@ -134,8 +127,8 @@ app.get("/Works/:searchparam/jobList", (req, res) => {
   );
 });
 
-app.get("/Works/:id/Details", (req, res) => {
-  pool.query(
+app.get("/Works/:id/Details", async (req, res) => {
+  await pool.query(
     `select * from works where Work_ID = ${req.params.id}`,
     (err, results) => {
       if (err) throw err;
@@ -144,45 +137,39 @@ app.get("/Works/:id/Details", (req, res) => {
   );
 });
 
-app.get("/Works/Categories", (req, res) => {
-  pool.query("select * from categories ", (err, results) => {
+app.get("/Works/Categories", async (req, res) => {
+  await pool.query("select * from categories ", (err, results) => {
     if (err) throw err;
     res.send(results);
   });
 });
 
-app.put("/Update/Works/:id", (req, res) => {
-  let email = req.body.Email;
-  let owner_email = req.body.Owner_Email;
-  let title = req.body.Work_Title;
-  let location = req.body.Location;
-  let position = req.body.Position;
-  let description = req.body.Description;
-  let aply_method = req.body.Apply_Method;
-  let work_type = req.body.WorkType;
-
-  pool.query(
-    `update works 
-              set Work_Title = '${title}',
-                  Location = '${location}',
-                  Position = '${position}',
-                  Email = '${email}',
-                  Owner_Email = '${owner_email}',
-                  Description = '${description}',
-                  Apply_Method = '${aply_method}',
-                  WorkType = '${work_type}'
-              
-              where Work_ID=${req.params.id}`,
-
-    (err, results) => {
-      if (err) throw err;
-      res.send(results);
-    }
-  );
+app.post("/works/:id/edit", async (req, res) => {
+  await pool
+    .query(
+      `UPDATE works 
+              SET Work_Title = '${req.body.Work_Title}',
+                  Location = '${req.body.Location}',
+                  Position = '${req.body.Position}',
+                  Email = '${req.body.Email}',
+                  Owner_Email = '${req.body.Owner_Email}',
+                  Description = '${req.body.Description}',
+                  Apply_Method = '${req.body.Apply_Method}',
+                  WorkType = '${req.body.WorkType}',
+                  Work_Keywords = '${req.body.Work_Keywords}',
+                  Category_ID = '${req.body.Category_ID}'
+              WHERE Work_ID=${req.params.id}`
+    )
+    .then((result) => {
+      res.send({ message: result });
+    })
+    .catch((err) => {
+      res.send({ message: err });
+    });
 });
 
-app.post("/works/delete/:id", (req, res) => {
-  pool
+app.post("/works/:id/delete", async (req, res) => {
+  await pool
     .query(`delete from works where Work_ID = ${req.params.id}`)
     .then((res) => {
       res.send(res);
@@ -192,9 +179,9 @@ app.post("/works/delete/:id", (req, res) => {
     });
 });
 
-app.put("/Update/Categories/:id", (req, res) => {
+app.post("/categories/:id/update", async (req, res) => {
   let nameCategories = req.body.Category_Name;
-  pool.query(
+  await pool.query(
     `update categories 
   set Category_Name = '${nameCategories}'
   where Category_ID =${req.params.id}`,
@@ -206,8 +193,8 @@ app.put("/Update/Categories/:id", (req, res) => {
   );
 });
 
-app.delete("/delete/Categories/:id", (req, res) => {
-  pool.query(
+app.delete("/categories/:id/delete", async (req, res) => {
+  await pool.query(
     `delete from categories where Category_ID = ${req.params.id}`,
     (err, results) => {
       if (err) throw err;

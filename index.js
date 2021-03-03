@@ -4,7 +4,7 @@ const cors = require("cors");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const db = require("./models/index");
-
+require("dotenv").config();
 const expressSession = require("express-session")({
   secret: "secret",
   resave: false,
