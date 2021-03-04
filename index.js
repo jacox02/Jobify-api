@@ -6,7 +6,6 @@ const bodyParser = require("body-parser");
 const db = require("./models/index");
 
 require("dotenv").config();
-app.use(cors());
 
 const expressSession = require("express-session")({
   secret: "secret",
@@ -20,7 +19,19 @@ db.sequelize.sync({ force: false }).then(() => {
 
 const PORT = process.env.PORT || 3050;
 
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "http://localhost:3001",
+      "https://jobify-front.herokuapp.com/",
+      `${process.env.CLIENT_ORIGIN}`,
+    ],
+    methods: ["GET", "POST"],
+    credentials: true,
+  })
+);
+
 app.use(morgan("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -31,7 +42,7 @@ app.use(require("./Routes/categories"));
 app.use(require("./Routes/auth"));
 app.use(require("./Routes/usersRoutes"));
 app.use(require("./Routes/configs"));
-app.use(require("./Routes/SendEmail"))
+app.use(require("./Routes/SendEmail"));
 
 app.get("/", (req, res) => {
   res.send({ message: "YOUR API IS WORKING!", code: 200 });
