@@ -28,6 +28,7 @@ app.use(require("./Routes/categories"));
 app.use(require("./Routes/auth"));
 app.use(require("./Routes/usersRoutes"));
 app.use(require("./Routes/configs"));
+app.use(require("./Routes/SendEmail"))
 
 app.get("/", (req, res) => {
   res.send({ message: "YOUR API IS WORKING!", code: 200 });
