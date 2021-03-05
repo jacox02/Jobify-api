@@ -43,4 +43,8 @@ app.post("/sendemail", (req, res) => {
     });
   });
 });
+<<<<<<< HEAD
 module.exports = app;
+=======
+module.exports = app;
+>>>>>>> 9fb18362286f60b39fc06de834b0c0ff14412363

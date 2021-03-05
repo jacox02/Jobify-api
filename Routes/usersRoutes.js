@@ -2,7 +2,25 @@ const express = require("express");
 const app = express();
 const bcrypt = require("bcrypt");
 const pool = require("../Database/database");
+const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
 app.use(express.json());
+
+app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(
+  session({
+    key: "userId",
+    secret: "Josea",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      expires: 60 * 60 * 24,
+    },
+  })
+);
 
 app.post("/register", async (req, res) => {
   const User_Name = req.body.User_Name;
@@ -21,28 +39,42 @@ app.post("/register", async (req, res) => {
     .catch((err) => res.send(err));
 });
 
-app.get("/login", async (req, res) => {
+app.get("/login", (req, res) => {
+  if (req.session.user) {
+    res.send({ loggedIn: true, user: req.session.user });
+  } else {
+    res.send({ loggedIn: false });
+  }
+});
+
+app.post("/login", (req, res) => {
   const User_Email = req.body.User_Email;
   const User_Password = req.body.User_Password;
-
-  await bcrypt
-  .compareSync(User_Password, 10)
-  .then((compareSync)=>{
-    pool.query(
-      "SELECT * FROM users WHERE User_Email = ? AND User_Password =?",
-      [User_Email, User_Password],
-      (err, results) => {
-        if (err) {
-          res.send({ err: err });
-        }
-        if (results.length > 0) {
-          res.send(results);
-        } else {
-          res.send({ message: "wrong Useremail/password combination!" });
-        }
+  console.log(User_Password);
+  pool
+    .query("SELECT * FROM users WHERE User_Email = ?;", User_Email)
+    .then((response) => {
+      if (response.length > 0) {
+        bcrypt
+          .compare(User_Password, response[0].User_Password)
+          .then((passwordBool) => {
+            if (passwordBool == true) {
+              req.session.user = response;
+              res.send(response);
+              console.log({ databaseRESPONSE: response });
+              console.log({ bcrypRESPONSE: passwordBool });
+            } else {
+              console.log({ bcrypRESPONSE: response });
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        res.send({ message: "Usuario no registrado" });
       }
-    );
-  })
-  
+    })
+    .catch((err) => res.send({ err: err }));
 });
+
 module.exports = app;
