@@ -39,14 +39,6 @@ app.post("/register", async (req, res) => {
     .catch((err) => res.send(err));
 });
 
-app.get("/login", (req, res) => {
-  if (req.session.user) {
-    res.send({ loggedIn: true, user: req.session.user });
-  } else {
-    res.send({ loggedIn: false });
-  }
-});
-
 app.post("/login", (req, res) => {
   const User_Email = req.body.User_Email;
   const User_Password = req.body.User_Password;
@@ -59,10 +51,7 @@ app.post("/login", (req, res) => {
           .compare(User_Password, response[0].User_Password)
           .then((passwordBool) => {
             if (passwordBool == true) {
-              req.session.user = response;
               res.send(response);
-              console.log({ databaseRESPONSE: response });
-              console.log({ bcrypRESPONSE: passwordBool });
             } else {
               console.log({ bcrypRESPONSE: response });
             }
