@@ -14,7 +14,6 @@ app.get("/works/List", async (res) => {
 });
 
 app.post("/works/add/", async (req, res) => {
-  console.log(req.body.categoryid);
   const {
     title,
     ownermail,
@@ -86,10 +85,10 @@ app.get("/myWorks/:ownermail/List", async (req, res) => {
   );
 });
 
-app.get("/Works/:id/List/:maxquantity", async (req, res) => {
+app.get("/Works/:id/list/", async (req, res) => {
   if (req.params.id == "1") {
     await pool.query(
-      `select * from categories C, works W where  W.Category_ID = C.Category_ID limit ${req.params.maxquantity}`,
+      `select * from categories C, works W where  W.Category_ID = C.Category_ID`,
       (err, results) => {
         if (err) throw err;
         res.send(results);
@@ -97,7 +96,7 @@ app.get("/Works/:id/List/:maxquantity", async (req, res) => {
     );
   } else {
     await pool.query(
-      `select * from categories C, works W WHERE W.Category_ID = C.Category_ID AND W.Category_ID = ${req.params.id} limit ${req.params.maxquantity}`,
+      `select * from categories C, works W WHERE W.Category_ID = C.Category_ID AND W.Category_ID = ${req.params.id}`,
       (err, results) => {
         if (err) throw err;
         res.send(results);

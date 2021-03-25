@@ -27,7 +27,7 @@ app.use(
       "https://jobify-front.herokuapp.com/",
       `${process.env.CLIENT_ORIGIN}`,
     ],
-    methods: ["GET", "POST"],
+    methods: ["GET,HEAD,PUT,PATCH,POST,DELETE"],
     credentials: true,
   })
 );
