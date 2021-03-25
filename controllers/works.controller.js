@@ -1,6 +1,5 @@
 const db = require("../models");
 const Work = db.works;
-const Op = db.Sequelize.Op;
 
 exports.create = (req, res) => {
   if (!req.body.title) {
@@ -55,7 +54,6 @@ exports.findAll = (req, res) => {
 
 exports.findOneByID = (req, res) => {
   const id = req.params.id;
-  console.log(id);
   Work.findByPk(id)
     .then((data) => {
       res.send({ data });
@@ -68,8 +66,6 @@ exports.findOneByID = (req, res) => {
       });
     });
 };
-
-exports.findOneByTitle = (req, res) => {};
 
 exports.update = (req, res) => {
   const id = req.body.Work_ID;
@@ -96,6 +92,7 @@ exports.update = (req, res) => {
       });
     });
 };
+
 exports.delete = (req, res) => {
   Work.destroy({
     where: {},
