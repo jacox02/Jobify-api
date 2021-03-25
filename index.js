@@ -19,18 +19,7 @@ db.sequelize.sync({ force: false }).then(() => {
 
 const PORT = process.env.PORT || 3050;
 
-app.use(
-  cors({
-    origin: [
-      "http://localhost:3000",
-      "http://localhost:3001",
-      "https://jobify-front.herokuapp.com/",
-      `${process.env.CLIENT_ORIGIN}`,
-    ],
-    methods: ["GET,HEAD,PUT,PATCH,POST,DELETE"],
-    credentials: true,
-  })
-);
+app.use(cors());
 
 app.use(morgan("dev"));
 app.use(bodyParser.json());
